@@ -253,7 +253,6 @@ namespace AlertsToLogAnalytics
 
                 alertJsonWriter.WritePropertyName("Status");
                 alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.status").ToString());
-
                 alertJsonWriter.WriteEndObject();
               
                 alertJsonWriter.WriteEndArray();
