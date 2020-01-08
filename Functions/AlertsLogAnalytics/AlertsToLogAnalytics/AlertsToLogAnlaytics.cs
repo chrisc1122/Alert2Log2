@@ -214,12 +214,54 @@ namespace AlertsToLogAnalytics
                 }
                 alertJsonWriter.WriteEndArray();
             }
+            else if (alertSignalType.ToLowerInvariant() == "activity log")
+            {
+                logEventType = "ActivityAlertsHistory";
+
+                alertJsonWriter.WriteStartArray();
+
+                alertJsonWriter.WriteStartObject();
+                alertJsonWriter.WritePropertyName("AlertRule");
+                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.alertRule").ToString());
+
+                alertJsonWriter.WritePropertyName("Severity");
+                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.severity").ToString());
+
+                alertJsonWriter.WritePropertyName("MonitorCondition");
+                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.monitorCondition").ToString());
+
+                alertJsonWriter.WritePropertyName("AlertId");
+                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.alertId").ToString());
+
+                alertJsonWriter.WritePropertyName("OriginalAlertId");
+                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.originAlertId").ToString());
+
+                alertJsonWriter.WritePropertyName("FiredTime");
+                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.firedDateTime").ToString());
+
+                alertJsonWriter.WritePropertyName("Channel");
+                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.channels").ToString());
+
+                alertJsonWriter.WritePropertyName("EventSource");
+                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.eventSource").ToString());
+
+                alertJsonWriter.WritePropertyName("Level");
+                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.level").ToString());
+
+                alertJsonWriter.WritePropertyName("Operation");
+                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.operationName").ToString());
+
+                alertJsonWriter.WritePropertyName("Status");
+                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.status").ToString());
+
+                alertJsonWriter.WriteEndObject();
+              
+                alertJsonWriter.WriteEndArray();
+            }
 
             string alertsJsonToLogAnalytics = jsonStrBuilder.ToString();
 
             //log.LogInformation("FORMATTED JSON : " + alertsJsonToLogAnalytics);
-
-
 
             //// Create a hash for the API signature
             var jsonBytes = Encoding.UTF8.GetBytes(alertsJsonToLogAnalytics);
