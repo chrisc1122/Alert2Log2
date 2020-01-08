@@ -118,6 +118,7 @@ namespace AlertsToLogAnalytics
 
                     alertJsonWriter.WriteStartObject();
 
+                    // Begin selecting Essentials details
                     alertJsonWriter.WritePropertyName("AlertRule");
                     alertJsonWriter.WriteValue(resltEssentials.SelectToken("alertRule").ToString());
 
@@ -142,6 +143,7 @@ namespace AlertsToLogAnalytics
                     alertJsonWriter.WritePropertyName("SignalType");
                     alertJsonWriter.WriteValue(resltEssentials.SelectToken("signalType").ToString());
 
+                    // Begin selecting AlertContext details
                     alertJsonWriter.WritePropertyName("MetricName");
                     alertJsonWriter.WriteValue(allOf.SelectToken("metricName").ToString());
 
@@ -173,6 +175,7 @@ namespace AlertsToLogAnalytics
             }
             else if (alertSignalType.ToLowerInvariant() == "log")
             {
+                logEventType = "QueryAlertsHistory";
                 List<JToken> resltColumns = bodyJObj.SelectToken("data.alertContext.SearchResults.tables[0].columns").ToList();
                 List<JToken> resltRows = bodyJObj.SelectToken("data.alertContext.SearchResults.tables[0].rows").ToList();
 
@@ -181,6 +184,8 @@ namespace AlertsToLogAnalytics
                 foreach (JToken rw in resltRows)
                 {
                     alertJsonWriter.WriteStartObject();
+
+                    // Begin selecting Essentials details
                     alertJsonWriter.WritePropertyName("AlertRule");
                     alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.alertRule").ToString());
 
@@ -199,11 +204,13 @@ namespace AlertsToLogAnalytics
                     alertJsonWriter.WritePropertyName("FiredTime");
                     alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.firedDateTime").ToString());
 
+                    // Begin selecting AlertContext details
                     alertJsonWriter.WritePropertyName("Query");
                     alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.SearchQuery").ToString());
 
                     alertJsonWriter.WritePropertyName("AlertType");
                     alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.AlertType").ToString());
+
                     alertJsonWriter.WritePropertyName(resltColumns[0].SelectToken("name").ToString());
                     alertJsonWriter.WriteValue(rw[0].ToString());
                     alertJsonWriter.WritePropertyName(resltColumns[1].SelectToken("name").ToString());
@@ -221,8 +228,13 @@ namespace AlertsToLogAnalytics
                 alertJsonWriter.WriteStartArray();
 
                 alertJsonWriter.WriteStartObject();
+
+                // Begin selecting Essentials details
                 alertJsonWriter.WritePropertyName("AlertRule");
                 alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.alertRule").ToString());
+
+                alertJsonWriter.WritePropertyName("AlertTarget");
+                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.alertTargetIDs").ToList());
 
                 alertJsonWriter.WritePropertyName("Severity");
                 alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.severity").ToString());
@@ -239,7 +251,7 @@ namespace AlertsToLogAnalytics
                 alertJsonWriter.WritePropertyName("FiredTime");
                 alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.firedDateTime").ToString());
 
-                alertJsonWriter.WritePropertyName("Channel");
+                // Begin selecting AlertContext detailsalertJsonWriter.WritePropertyName("Channel");
                 alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.channels").ToString());
 
                 alertJsonWriter.WritePropertyName("EventSource");
