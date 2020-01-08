@@ -234,7 +234,7 @@ namespace AlertsToLogAnalytics
                 alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.alertRule").ToString());
 
                 alertJsonWriter.WritePropertyName("AlertTarget");
-                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.alertTargetIDs").ToList());
+                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.alertTargetIDs").ToString());
 
                 alertJsonWriter.WritePropertyName("Severity");
                 alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.severity").ToString());
