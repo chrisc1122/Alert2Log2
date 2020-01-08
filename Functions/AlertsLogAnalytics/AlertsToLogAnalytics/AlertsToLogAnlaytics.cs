@@ -225,47 +225,58 @@ namespace AlertsToLogAnalytics
             {
                 logEventType = "ActivityAlertsHistory";
 
+                JToken resltEssentials = bodyJObj.SelectToken("data.essentials");
+                List<JToken> alertTargets = bodyJObj.SelectToken("data.essentials.alertTargetIDs").ToList();
+
                 alertJsonWriter.WriteStartArray();
 
-                alertJsonWriter.WriteStartObject();
+                foreach (JToken alertTarget in alertTargets)
+                {
+                    alertJsonWriter.WriteStartObject();
 
-                // Begin selecting Essentials details
-                alertJsonWriter.WritePropertyName("AlertRule");
-                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.alertRule").ToString());
+                    // Begin selecting Essentials details
+                    alertJsonWriter.WritePropertyName("AlertRule");
+                    alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.alertRule").ToString());
 
-                alertJsonWriter.WritePropertyName("Severity");
-                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.severity").ToString());
+                    alertJsonWriter.WritePropertyName("AlertTargets");
+                    alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.alertTargetIDs").ToString());
 
-                alertJsonWriter.WritePropertyName("MonitorCondition");
-                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.monitorCondition").ToString());
+                    alertJsonWriter.WritePropertyName("Severity");
+                    alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.severity").ToString());
 
-                alertJsonWriter.WritePropertyName("AlertId");
-                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.alertId").ToString());
+                    alertJsonWriter.WritePropertyName("MonitorCondition");
+                    alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.monitorCondition").ToString());
 
-                alertJsonWriter.WritePropertyName("OriginalAlertId");
-                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.originAlertId").ToString());
+                    alertJsonWriter.WritePropertyName("AlertId");
+                    alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.alertId").ToString());
 
-                alertJsonWriter.WritePropertyName("FiredTime");
-                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.firedDateTime").ToString());
+                    alertJsonWriter.WritePropertyName("OriginalAlertId");
+                    alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.originAlertId").ToString());
 
-                // Begin selecting AlertContext details
-                alertJsonWriter.WritePropertyName("Channel");
-                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.channels").ToString());
+                    alertJsonWriter.WritePropertyName("FiredTime");
+                    alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.firedDateTime").ToString());
 
-                alertJsonWriter.WritePropertyName("EventSource");
-                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.eventSource").ToString());
+                    // Begin selecting AlertContext details
+                    alertJsonWriter.WritePropertyName("Channel");
+                    alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.channels").ToString());
 
-                alertJsonWriter.WritePropertyName("Level");
-                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.level").ToString());
+                    alertJsonWriter.WritePropertyName("EventSource");
+                    alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.eventSource").ToString());
 
-                alertJsonWriter.WritePropertyName("Operation");
-                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.operationName").ToString());
+                    alertJsonWriter.WritePropertyName("Level");
+                    alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.level").ToString());
 
-                alertJsonWriter.WritePropertyName("Status");
-                alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.status").ToString());
-                alertJsonWriter.WriteEndObject();
-              
-                alertJsonWriter.WriteEndArray();
+                    alertJsonWriter.WritePropertyName("Operation");
+                    alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.operationName").ToString());
+
+                    alertJsonWriter.WritePropertyName("Status");
+                    alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.status").ToString());
+                    alertJsonWriter.WriteEndObject();
+
+                }
+
+            alertJsonWriter.WriteEndArray();
+
             }
 
             string alertsJsonToLogAnalytics = jsonStrBuilder.ToString();
