@@ -248,7 +248,8 @@ namespace AlertsToLogAnalytics
                 alertJsonWriter.WritePropertyName("FiredTime");
                 alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.essentials.firedDateTime").ToString());
 
-                // Begin selecting AlertContext detailsalertJsonWriter.WritePropertyName("Channel");
+                // Begin selecting AlertContext details
+                alertJsonWriter.WritePropertyName("Channel");
                 alertJsonWriter.WriteValue(bodyJObj.SelectToken("data.alertContext.channels").ToString());
 
                 alertJsonWriter.WritePropertyName("EventSource");
