@@ -92,6 +92,7 @@ namespace AlertsToLogAnalytics
 
         private static void AlertJsonParserAndPostData(string reqJson, string workspaceId, string workspaceKey, ILogger log)
         {
+            // Add BreakPoint Here for local testing
             JObject bodyJObj = JObject.Parse(reqJson);
             string alertSignalType = bodyJObj.SelectToken("data.essentials.signalType").ToString();
             string timeStampField = "";
@@ -294,12 +295,17 @@ namespace AlertsToLogAnalytics
 
         [FunctionName("AlertsToLogAnlaytics")]
         public static async void Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req, ILogger log)
         {
+            // The variables defined here are part of the configuration of the functionAPP, so it is required to add them
+            //   Added under Function App > Name > Platform Features > Configuration
             string workspaceId = Environment.GetEnvironmentVariable("kv-loganalytics-workspace-id", EnvironmentVariableTarget.Process);
             string workspaceKey = Environment.GetEnvironmentVariable("kv-loganalytics-key", EnvironmentVariableTarget.Process);
 
+            // Uncomment and provide the updated TenantID, ClientID and ClientSecretKey ( Existing Secret needs to be recreated, as will expire each testing cycle )
+            // string Token = GetAccessToken("3a309051-0a9e-4ea4-be4d-b660a10f0d8d", "f1d85d2f-5170-4be6-a23a-aaa53a33f1c1", "dI0UBpXP59EA?6:GdUc@rrtTL@CkivGx").ToString();
+
+            // Add BreakPoint here for Local testing ( Be sure to exclude the local.settings.json within .gitignore )
             log.LogInformation(workspaceId);
             log.LogInformation(workspaceKey);
 
