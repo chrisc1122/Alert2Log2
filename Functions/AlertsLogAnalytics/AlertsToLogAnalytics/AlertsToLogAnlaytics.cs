@@ -282,7 +282,7 @@ namespace AlertsToLogAnalytics
 
             string alertsJsonToLogAnalytics = jsonStrBuilder.ToString();
 
-            //log.LogInformation("FORMATTED JSON : " + alertsJsonToLogAnalytics);
+            log.LogInformation("FORMATTED JSON : " + alertsJsonToLogAnalytics);
 
             //// Create a hash for the API signature
             var jsonBytes = Encoding.UTF8.GetBytes(alertsJsonToLogAnalytics);
